@@ -4,6 +4,8 @@ import platform
 import random
 import sys
 
+import mysql.connector
+
 import disnake
 from disnake import ApplicationCommandInteraction
 from disnake.ext import tasks, commands
@@ -23,6 +25,14 @@ BotIntents = disnake.Intents.default()
 
 bot = Bot(command_prefix=commands.when_mentioned, intents=BotIntents, help_command=None)
 
+bot.Database = mysql.connector.connect(
+	host=LJS['database']['host'],
+	user=LJS['database']['user'],
+	passwd=LJS['database']['passwd'],
+	database=LJS['database']['database'],
+)
+
+bot.LJS = LJS
 bot.config = LJS['config']
 
 @bot.event

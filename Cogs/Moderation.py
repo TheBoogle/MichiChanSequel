@@ -23,51 +23,23 @@ class Moderation(commands.Cog, name='moderation'):
 		self.bot = bot
 
 	@commands.slash_command(
-		name='kick',
-		description='Kick a user out of the server.',
+		name='warns',
+		description='View the warnings of a user',
 		options = [
 			Option(
 				name="user",
-				description="The user you want to kick",
+				description="The user you want to the warns of",
 				type=OptionType.user,
 				required=True
-			),
-			Option(
-				name='reason',
-				description="The reason you kicked the user.",
-				type=OptionType.string,
-				required = False
 			)
 		]
 	)
-
 	
-
-	@commands.has_permissions(kick_members=True)
-	async def kick(self, interaction: ApplicationCommandInteraction, user: disnake.User, reason: str = "No reason provided."):
-		member = await interaction.guild.get_or_fetch_member(user.id)
+	@commands.has_permissions(manage_messages=True)
+	async def warns(self, interaction: ApplicationCommandInteraction, user: disnake.User):
+		await interaction.send('test')
 		
-		if member.guild_permissions.administrator:
-			await interaction.send(embed=EZEmbed('Error!', ERROR, 'User is an admin!'))
-		else:
-			try:
-				Embed = EZEmbed('User Kicked!', SUCCESS, f'**{member}** was kicked by **{interaction.author}**')
-				Embed.add_field(
-					name = 'Reason: ',
-					value = reason
-				)
-				await interaction.send(embed=Embed)
-
-				try:
-					Embed.description = f'You were kicked by **{interaction.author}** in **{interaction.guild}**'
-					await member.send(embed=Embed)
-				except:
-					pass
-				#await member.kick(reason=reason)
-
-			except:
-				Embed = EZEmbed('Error!', ERROR, f'Failed to kick.')
-				await interaction.send(embed=Embed)
+	
 
 def setup(bot):
 	bot.add_cog(Moderation(bot))
