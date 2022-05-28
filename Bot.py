@@ -21,7 +21,7 @@ for OFile in os.listdir('JSONFiles'):
 		LJS[OFile.split('.')[0]] = config
 	
 
-BotIntents = disnake.Intents.default()
+BotIntents = disnake.Intents.all()
 
 bot = Bot(command_prefix=commands.when_mentioned, intents=BotIntents, help_command=None)
 
@@ -40,6 +40,9 @@ async def on_ready():
 	print(f'{bot.user.name} is now online.')
 
 	status_task.start()
+
+
+	
 
 @tasks.loop(minutes=1.0)
 async def status_task():
